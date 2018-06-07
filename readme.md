@@ -1,3 +1,4 @@
+# Usage
 ```bash
 ./soccerimg.py 05/31 > rm_me.png && feh rm_me.png && rm rm_me.png
 ```
@@ -8,3 +9,11 @@ sudo mount --bind . cgi-bin/
 python -m CGIHTTPServer 
 ```
 
+## apache
+```
+LoadModule cgid_module modules/mod_cgid.so
+<Directory /srv/http/pisa_head_count>
+        Options ExecCGI
+        SetHandler cgi-script
+</Directory>
+```

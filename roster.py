@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 
-from soccerimg import most_recent_image
 import cgitb
 import sys
+import matplotlib; matplotlib.use('agg')
+from soccerimg import most_recent_image
 
 cgitb.enable()
+
 img = most_recent_image()
 
 print("Content-type: image/png\n")
