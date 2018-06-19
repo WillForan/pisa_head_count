@@ -59,12 +59,12 @@ def dayrow_extract(dayrow):
     return({'f': f, 'm': m, 'need_n': need_n})
 
 
-def draw_names(v, offset=0, color='black'):
+def draw_names(v, offset=0, color='black', adj=0):
     text_offset = .1  # how far to shift text over
     x = 1  # all on the vert pos.
     for i, n in enumerate(v):
         plt.text(x-text_offset, i+.2+offset,
-                 "%d. %s" % (i+1+offset, n), color=color)
+                 "%d. %s" % (i+1+offset-adj, n), color=color)
 
 
 def plot_players(f, m, need_n):
@@ -76,7 +76,7 @@ def plot_players(f, m, need_n):
     fig = plt.figure()
 
     # gap between m and f
-    f_offset = len(m) + 1 
+    f_offset = len(m) + 1
 
     # color histogram. give .2 extra so empty will show (as red)
     plt.bar(1, len(m)+.2, width, color=mcolor)
@@ -87,8 +87,8 @@ def plot_players(f, m, need_n):
     plt.xlim([.5, 1.5])
     plt.axis('off')
     # place enumerated names on the bar
-    draw_names(m, 0, 'black')
-    draw_names(f, f_offset, 'black')
+    draw_names(m, 0, 'black', 0)
+    draw_names(f, f_offset, 'black', 1)
     #
     title = "\n" +\
             r'$\frac{%d}{%d}$ = $\frac{%d}{2}$♀ + $\frac{%d}{%d}$♂ ' %\
