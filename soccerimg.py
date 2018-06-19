@@ -25,7 +25,7 @@ def game_roster(match_date, ngames=10):
     return(dayrow)
 
 
-def get_match_date(match_dow=3,week_offset=0):
+def get_match_date(match_dow=3, week_offset=0):
     """
     game_roster parsed google sheet encodes day like mm/dd
     find the next game day in mm/dd format
@@ -44,28 +44,32 @@ def dayrow_extract(dayrow):
      - find the columns greater than 0, skip the first 6 columns
      - use that to get the number of players
     """
-    ignr=5 # zero-based count of non-yes/no player cols (to ignore)
-    players = dayrow.columns[ [False]*ignr + (dayrow.iloc[:,ignr:]>0).values.tolist()[0] ]
+    ignr = 5  # zero-based count of non-yes/no player cols (to ignore)
+    players = dayrow.columns[
+                  [False]*ignr +
+                  (dayrow.iloc[:, ignr:] > 0).values.tolist()[0]
+              ]
     # gals match '♀' in name
-    gals = [not re.search('♀',x) is None for x in players]
+    gals = [not re.search('♀', x) is None for x in players]
     m = players[[not x for x in gals]]
-    f = [re.sub(' *♀','',x) for x in players[gals]]
+    f = [re.sub(' *♀', '', x) for x in players[gals]]
 
     # size like 8v8, extract the first char (8) and make an int
     need_n = int(dayrow['size'].values[0][0])
     return({'f': f, 'm': m, 'need_n': need_n})
 
 
-def draw_names(v,offset=0,color='black'):
-    text_offset = .1 # how far to shift text over
-    x=1 # all on the vert pos.
-    for i,n in enumerate(v):
-        plt.text(x-text_offset,i+.2+offset,"%d. %s" % (i+1+offset,n), color=color )
+def draw_names(v, offset=0, color='black'):
+    text_offset = .1  # how far to shift text over
+    x = 1  # all on the vert pos.
+    for i, n in enumerate(v):
+        plt.text(x-text_offset, i+.2+offset,
+                 "%d. %s" % (i+1+offset, n), color=color)
 
 
-def plot_players(f,m,need_n):
+def plot_players(f, m, need_n):
     width = .3
-    total = len(m) + len(f) # == dayrow.TOTAL.values[0]
+    total = len(m) + len(f)  # == dayrow.TOTAL.values[0]
     # cut posible range into colors red (too few), yellow (enough), green (have subs)
     fcolor = pd.cut([len(f)], [-pd.np.Inf,1,2,pd.np.Inf],labels=['red','yellow','green'])[0]
     mcolor = pd.cut([len(m)], [-pd.np.Inf,need_n-max(2,len(f)),need_n,pd.np.Inf],labels=['red','yellow','green'])[0]

@@ -5,7 +5,7 @@
 OR
 ```bash
 sudo mount --bind . cgi-bin/
-(sleep 3; curl 0.0.0.0:8000/cgi-bin/roster.py|feh -) &
+(sleep 3; curl 0.0.0.0:8000/cgi-bin/current_roster.png|feh -) &
 python -m CGIHTTPServer 
 ```
 
