@@ -72,11 +72,15 @@ def plot_players(f, m, need_n):
     total = len(m) + len(f)  # == dayrow.TOTAL.values[0]
     # cut posible range into colors red (too few), yellow (enough), green (have subs)
     fcolor = pd.cut([len(f)], [-pd.np.Inf,1,2,pd.np.Inf],labels=['red','yellow','green'])[0]
-    mcolor = pd.cut([len(m)], [-pd.np.Inf,need_n-max(2,len(f)),need_n,pd.np.Inf],labels=['red','yellow','green'])[0]
+    mcolor = pd.cut([len(m)], [-pd.np.Inf,need_n-max(2,len(f))-1,need_n,pd.np.Inf],labels=['red','yellow','green'])[0]
     fig = plt.figure()
+
+    # gap between m and f
+    f_offset = len(m) + 1 
+
     # color histogram. give .2 extra so empty will show (as red)
     plt.bar(1, len(m)+.2, width, color=mcolor)
-    plt.bar(1, len(f)+.2, width, len(m), color=fcolor)
+    plt.bar(1, len(f)+.2, width, f_offset, color=fcolor)
     # show 2 above how many we have
     plt.ylim([-.2, total+2])
     # only show one x position
@@ -84,7 +88,7 @@ def plot_players(f, m, need_n):
     plt.axis('off')
     # place enumerated names on the bar
     draw_names(m, 0, 'black')
-    draw_names(f, len(m), 'black')
+    draw_names(f, f_offset, 'black')
     #
     title = "\n" +\
             r'$\frac{%d}{%d}$ = $\frac{%d}{2}$♀ + $\frac{%d}{%d}$♂ ' %\
