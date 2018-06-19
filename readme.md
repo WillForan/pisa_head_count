@@ -1,3 +1,11 @@
+# What
+
+Transform a roster into an email with a live image tally.
+
+![](readme-img/roster.png?raw)
+
+
+![](readme-img/render.png?raw)
 # Usage
 
 ## Image
