@@ -6,6 +6,13 @@ import datetime as dt
 import sys      # args and exit
 import re       # match and remove ♀
 import io       # save plot to stream
+import configparser  # read google sheet url
+
+
+def read_config():
+    config = configparser.ConfigParser()
+    config.read("config.ini")
+    return(config)
 
 
 def game_roster(match_date, ngames=10):
@@ -15,11 +22,12 @@ def game_roster(match_date, ngames=10):
      - reformat date from m/d to mm/dd to match python's strftime
     1. select only the row that matches the game date we provide
     """
-    gsheet = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQW4QdMnwot2ABQjt7HScESNRRbzTCvcGBJT7qRwymS28scPSBlL5aLixxVly8Gmjst0TDoCeIkdKXz/pub?gid=801787798&single=true&output=tsv'
+    gsheet = read_config()['roster']['tsv']
     df = pd.read_csv(gsheet, sep='\t')[0:ngames]
     # make dates look like what python uses, so we can find game day
     # essentially just add 0 to 1 digit months
-    df.loc[:, 'date'] = [x.strftime("%m/%d") for x in pd.to_datetime(df.date, format="%m/%d")]
+    df.loc[:, 'date'] = [x.strftime("%m/%d")
+                         for x in pd.to_datetime(df.date, format="%m/%d")]
     dayrow = df[df.date == match_date]
 
     return(dayrow)

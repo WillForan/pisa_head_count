@@ -1,0 +1,11 @@
+[roster]
+tsv = https://docs.google.com/spreadsheets/...&single=true&output=tsv
+doc = https://docs.google.com/spreadsheets/.../edit?usp=sharing
+page = https://apps.dashplatform.com/dash/index.php?Action=team/index&company=pisa&teamid=xxx
+
+[host]
+imglink = http://www.example.com/pisa_head_count/current_roster.png
+
+[email]
+from = no-reply@example.com
+tsv = https://docs.google.com/spreadsheets/...&single=true&output=tsv
