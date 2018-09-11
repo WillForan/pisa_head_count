@@ -15,6 +15,16 @@ def read_config():
     return(config)
 
 
+def read_date(x):
+    try:
+        x = pd.to_datetime(x, format="%m/%d")
+        x = x.strftime("%m/%d")
+    except Exception:
+        x = ""
+    finally:
+        return(x)
+
+
 def game_roster(match_date, ngames=10):
     """
     0. pull game roster from google sheets and clean it up a bit
@@ -26,8 +36,7 @@ def game_roster(match_date, ngames=10):
     df = pd.read_csv(gsheet, sep='\t')[0:ngames]
     # make dates look like what python uses, so we can find game day
     # essentially just add 0 to 1 digit months
-    df.loc[:, 'date'] = [x.strftime("%m/%d")
-                         for x in pd.to_datetime(df.date, format="%m/%d")]
+    df.loc[:, 'date'] = [read_date(x) for x in df.date]
     dayrow = df[df.date == match_date]
 
     return(dayrow)
@@ -52,7 +61,7 @@ def dayrow_extract(dayrow):
      - find the columns greater than 0, skip the first 6 columns
      - use that to get the number of players
     """
-    ignr = 5  # zero-based count of non-yes/no player cols (to ignore)
+    ignr = 4  # zero-based count of non-yes/no player cols (to ignore)
     players = dayrow.columns[
                   [False]*ignr +
                   (dayrow.iloc[:, ignr:] > 0).values.tolist()[0]
@@ -63,7 +72,8 @@ def dayrow_extract(dayrow):
     f = [re.sub(' *♀', '', x) for x in players[gals]]
 
     # size like 8v8, extract the first char (8) and make an int
-    need_n = int(dayrow['size'].values[0][0])
+    # need_n = int(dayrow['size'].values[0][0]) # 20180911 -- PSL all same size
+    need_n = 7
     return({'f': f, 'm': m, 'need_n': need_n})
 
 

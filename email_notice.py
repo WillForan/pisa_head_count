@@ -2,6 +2,7 @@
 import soccerimg as si
 import pandas as pd
 import sys
+import re
 # https://docs.python.org/2/library/email-examples.html
 from email.mime.text import MIMEText
 
@@ -14,6 +15,8 @@ me = config['email']['from']
 
 match_date = si.get_match_date()
 dayrow = si.game_roster(match_date)
+print("game")
+print(dayrow)
 
 if dayrow is None:
     print("no dayrow for %s", match_date)
@@ -44,21 +47,23 @@ urls = {'img': "%s?date=%s" % (img_base, match_date),
 
 
 df = pd.read_csv(config['email']['tsv'], sep='\t')
-nplayers = 12  # not including me
-to = "; ".join(df.email[0:nplayers])
+hasemail = re.compile('@')
+emails = [ x for x in df.email.tolist() if hasemail.search(str(x))]
+print(emails)
+to = "; ".join(emails)
 # from email.mime.multipart import MIMEMultipart
 # mail = MIMEMultipart('alternative')
 # mail.attach(MIMEText(msg, 'html'))
+print("sending to")
+print(to)
 
 if(len(sys.argv) > 1):
     urls['msg'] = sys.argv[1]
 
 
 mail = MIMEText(msg % urls, 'html')
-mail['Subject'] = "[Thu PISA] %(size)s @ %(time)spm (%(date)s) " % \
-        {'date': match_date,
-         'size': dayrow['size'].values[0],
-         'time': dayrow['time'].values[0]}
+mail['Subject'] = "[Thu PSL] %(time)spm (%(date)s) " % \
+        {'date': match_date, 'time': dayrow['time'].values[0]}
 mail['To'] = to
 mail['From'] = me
 
