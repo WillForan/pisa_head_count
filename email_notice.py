@@ -32,23 +32,25 @@ msg = """
 %(msg)s
 <br><br>
 <p>
-<a href="%(pisa)s"> PISA </a> | <a href="%(gdoc)s">sheet</a> <br><br>
+<a href="%(page)s"> PSL </a> | <a href="%(gdoc)s">sheet</a> <br>
+venmo <a href="http://www.venmo.com/Will-Foran">@Will-Foran</a>
+/ <a href="http://paypal.me/willforan/75">paypal</a> <br>
 </p>
-<a href=%(gdoc)s>
+<a href="%(img)s">
 <img src="%(img)s">
 </a>
 </body></html>
 """
 
 urls = {'img': "%s?date=%s" % (img_base, match_date),
-        'pisa': config['roster']['page'],
+        'page': config['roster']['page'],
         'gdoc': config['roster']['doc'],
         'msg': ""}
 
 
 df = pd.read_csv(config['email']['tsv'], sep='\t')
 hasemail = re.compile('@')
-emails = [ x for x in df.email.tolist() if hasemail.search(str(x))]
+emails = [x for x in df.email.tolist() if hasemail.search(str(x))]
 print(emails)
 to = "; ".join(emails)
 # from email.mime.multipart import MIMEMultipart
