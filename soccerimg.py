@@ -42,7 +42,7 @@ def game_roster(match_date, ngames=10):
     return(dayrow)
 
 
-def get_match_date(match_dow=3, week_offset=0):
+def get_match_date(match_dow=6, week_offset=0):
     """
     game_roster parsed google sheet encodes day like mm/dd
     find the next game day in mm/dd format

@@ -32,9 +32,9 @@ msg = """
 %(msg)s
 <br><br>
 <p>
-<a href="%(page)s"> PSL </a> | <a href="%(gdoc)s">sheet</a> <br>
-venmo <a href="http://www.venmo.com/Will-Foran">@Will-Foran</a>
-/ <a href="http://paypal.me/willforan/75">paypal</a> <br>
+<a href="%(gdoc)s">sheet</a> <br>
+$%(cost)s via venmo <a href="https://venmo.com/%(venmo_id)s">@%(venmo_id)s</a>
+/ <a href="http://paypal.me/%(paypal_id)s/%(cost)s>paypal</a> <br>
 </p>
 <a href="%(img)s">
 <img src="%(img)s">
@@ -45,6 +45,9 @@ venmo <a href="http://www.venmo.com/Will-Foran">@Will-Foran</a>
 urls = {'img': "%s?date=%s" % (img_base, match_date),
         'page': config['roster']['page'],
         'gdoc': config['roster']['doc'],
+        'cost': config['pay']['cost'],
+        'paypal_id': config['pay']['paypal_id'],
+        'venmo_id': config['pay']['venmo_id'],
         'msg': ""}
 
 

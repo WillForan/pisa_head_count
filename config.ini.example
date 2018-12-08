@@ -9,3 +9,8 @@ imglink = http://www.example.com/pisa_head_count/current_roster.png
 [email]
 from = no-reply@example.com
 tsv = https://docs.google.com/spreadsheets/...&single=true&output=tsv
+
+[pay]
+cost = 57
+venmo_id = xxx
+paypal_id = Yyy
