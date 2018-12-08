@@ -9,6 +9,11 @@ from email.mime.text import MIMEText
 # https://stackoverflow.com/questions/73781/sending-mail-via-sendmail-from-python
 from subprocess import Popen, PIPE
 
+def ascii_only(x):
+    " remove weird non-ascii chars"
+    x = re.sub(r'[^\x00-\x7F]','', x) 
+    return(x)
+
 config = si.read_config()
 img_base = config['host']['imglink']
 me = config['email']['from']
@@ -17,6 +22,16 @@ match_date = si.get_match_date()
 dayrow = si.game_roster(match_date)
 print("game")
 print(dayrow)
+
+try:
+    next_game = si.game_roster(si.get_match_date(week_offset=1))
+    next_str = "next game: %s %s"%(next_game.date.values[0], next_game.time.values[0])
+    next_str = ascii_only(next_str) # remove weird non-ascii chars
+except:
+    print("failed to get next game")
+    next_str=""
+
+    
 
 if dayrow is None:
     print("no dayrow for %s", match_date)
@@ -31,11 +46,15 @@ msg = """
 <br><br>
 %(msg)s
 <br><br>
-<p>
-<a href="%(gdoc)s">sheet</a> <br>
-$%(cost)s via venmo <a href="https://venmo.com/%(venmo_id)s">@%(venmo_id)s</a>
-/ <a href="http://paypal.me/%(paypal_id)s/%(cost)s>paypal</a> <br>
-</p>
+<ul>
+  <li>
+     <a href="%(gdoc)s">%(next_str)s (sheet)</a></li>
+  <li>$%(cost)s via venmo
+       <a href="https://venmo.com/%(venmo_id)s">@%(venmo_id)s</a>
+       or <a href="http://paypal.me/%(paypal_id)s/%(cost)s>paypal</a> <br>
+  </li>
+</ul>
+
 <a href="%(img)s">
 <img src="%(img)s">
 </a>
@@ -48,6 +67,7 @@ urls = {'img': "%s?date=%s" % (img_base, match_date),
         'cost': config['pay']['cost'],
         'paypal_id': config['pay']['paypal_id'],
         'venmo_id': config['pay']['venmo_id'],
+        'next_str': next_str,
         'msg': ""}
 
 
@@ -65,10 +85,11 @@ print(to)
 if(len(sys.argv) > 1):
     urls['msg'] = sys.argv[1]
 
+subj_str = "[Sunday soccer] %(time)s (%(date)s) " % \
+        {'date': ascii_only(match_date), 'time': ascii_only(dayrow['time'].values[0])}
 
 mail = MIMEText(msg % urls, 'html')
-mail['Subject'] = "[Thu PSL] %(time)spm (%(date)s) " % \
-        {'date': match_date, 'time': dayrow['time'].values[0]}
+mail['Subject'] = subj_str
 mail['To'] = to
 mail['From'] = me
 
