@@ -51,7 +51,7 @@ msg = """
      <a href="%(gdoc)s">%(next_str)s (sheet)</a></li>
   <li>$%(cost)s via venmo
        <a href="https://venmo.com/%(venmo_id)s">@%(venmo_id)s</a>
-       or <a href="http://paypal.me/%(paypal_id)s/%(cost)s>paypal</a> <br>
+       or <a href="http://paypal.me/%(paypal_id)s/%(cost)s">paypal</a> <br>
   </li>
 </ul>
 
