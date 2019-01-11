@@ -29,7 +29,7 @@ try:
     next_str = ascii_only(next_str) # remove weird non-ascii chars
 except:
     print("failed to get next game")
-    next_str=""
+    next_str="next game: TBD"
 
     
 
