@@ -64,7 +64,7 @@ with open("standard_message.html", 'r') as f:
 
 email_fill['next_str'] = next_str
 email_fill['img'] = "%s?date=%s&config=%s" % \
-                    (img_base, match_date, os.path.basename(sys.argv[1], ".ini"))
+        (img_base, match_date, os.path.basename(sys.argv[1])[:-4])
 
 if config['roster']['page']:
     email_fill['page'] = """
