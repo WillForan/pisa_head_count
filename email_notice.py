@@ -44,7 +44,7 @@ print("game")
 print(dayrow)
 
 try:
-    next_game = si.game_roster(si.get_match_date(week_offset=1),
+    next_game = si.game_roster(si.get_match_date(dow, week_offset=1),
                                config_file=sys.argv[1])
     next_str = "next game: %s %s" % \
                (next_game.date.values[0], next_game.time.values[0])
