@@ -14,5 +14,6 @@ header = [Soccer]
 
 [pay]
 cost = 57
+; do not include venmo @ in user id
 venmo_id = xxx
 paypal_id = Yyy

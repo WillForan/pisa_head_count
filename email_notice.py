@@ -58,32 +58,9 @@ if dayrow is None:
     print("no dayrow for %s", match_date)
     sys.exit()
 
-# e.g. 6/7 6v6 8:50
-msg = """
-<html>
-<head></head>
-<body>
-<p> Who's in?</p>
-<br><br>
-%(msg)s
-<br><br>
-<ul>
-  <li> <a href="%(gdoc)s">%(next_str)s</a> </li>
-  <li> <a href="%(gdoc)s">google sheet</a> </li>
-  %(page)s
-  <li>$%(cost)s via venmo
-       <a href="https://venmo.com/%(venmo_id)s">@%(venmo_id)s</a>
-       or <a href="http://paypal.me/%(paypal_id)s/%(cost)s">paypal</a> <br>
-  </li>
-</ul>
-
-<!--
-<a href="%(img)s">
-<img src="%(img)s">
-</a>
--->
-</body></html>
-"""
+# read in message tempalte from file
+with open("standard_message.html", 'r') as f:
+    msg = f.read()
 
 email_fill['next_str'] = next_str
 email_fill['img'] = "%s?date=%s" % (img_base, match_date)
@@ -111,8 +88,9 @@ print(to)
 if(len(sys.argv) > 2):
     email_fill['msg'] = " ".join(sys.argv[2:])
 
-subj_str = "%(header)s %(time)s (%(date)s) " % \
+subj_str = "%(header)s %(time)s (%(date)s) %(field)s" % \
         {'header': email_header,
+         'field': ascii_only(dayrow['field'].values[0]),
          'date': ascii_only(match_date),
          'time': ascii_only(dayrow['time'].values[0])}
 
