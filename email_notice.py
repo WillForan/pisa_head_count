@@ -37,7 +37,6 @@ if dayrow is None:
     print("no dayrow for %s", match_date)
     sys.exit()
 
-# e.g. 6/7 6v6 8:50
 msg = """
 <html>
 <head></head>
@@ -51,12 +50,12 @@ msg = """
      <a href="%(gdoc)s">%(next_str)s (sheet)</a></li>
   <li>$%(cost)s via venmo
        <a href="https://venmo.com/%(venmo_id)s">@%(venmo_id)s</a>
-       or <a href="http://paypal.me/%(paypal_id)s/%(cost)s>paypal</a> <br>
+       or <a href="http://paypal.me/%(paypal_id)s/%(cost)s">paypal</a> <br>
   </li>
 </ul>
 
 <a href="%(img)s">
-<img src="%(img)s">
+  <img src="%(img)s">
 </a>
 </body></html>
 """
@@ -85,11 +84,13 @@ print(to)
 if(len(sys.argv) > 1):
     urls['msg'] = sys.argv[1]
 
-subj_str = "[Sunday soccer] %(time)s (%(date)s) " % \
-        {'date': ascii_only(match_date), 'time': ascii_only(dayrow['time'].values[0])}
+subj_str = "%(prefix)s %(time)s (%(date)s) " % \
+               {'prefix': config['email']['subject_pre'],
+                'date': match_date,
+                'time': dayrow['time'].values[0]}
 
 mail = MIMEText(msg % urls, 'html')
-mail['Subject'] = subj_str
+mail['Subject'] = ascii_only(subj_str)
 mail['To'] = to
 mail['From'] = me
 

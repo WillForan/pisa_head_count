@@ -9,6 +9,7 @@ imglink = http://www.example.com/pisa_head_count/current_roster.png
 [email]
 from = no-reply@example.com
 tsv = https://docs.google.com/spreadsheets/...&single=true&output=tsv
+subject_pre = "[Sun Soccer]"
 
 [pay]
 cost = 57
