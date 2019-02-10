@@ -9,9 +9,9 @@ import io       # save plot to stream
 import configparser  # read google sheet url
 
 
-def read_config():
+def read_config(config_file="config.ini"):
     config = configparser.ConfigParser()
-    config.read("config.ini")
+    config.read(config_file)
     return(config)
 
 
@@ -25,14 +25,14 @@ def read_date(x):
         return(x)
 
 
-def game_roster(match_date, ngames=10):
+def game_roster(match_date, ngames=10, config_file="config.ini"):
     """
     0. pull game roster from google sheets and clean it up a bit
      - remove junk rows (only take as many rows as there are games)
      - reformat date from m/d to mm/dd to match python's strftime
     1. select only the row that matches the game date we provide
     """
-    gsheet = read_config()['roster']['tsv']
+    gsheet = read_config(config_file)['roster']['tsv']
     df = pd.read_csv(gsheet, sep='\t')[0:ngames]
     # make dates look like what python uses, so we can find game day
     # essentially just add 0 to 1 digit months

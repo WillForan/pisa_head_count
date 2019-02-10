@@ -1,6 +1,7 @@
 [roster]
 tsv = https://docs.google.com/spreadsheets/...&single=true&output=tsv
 doc = https://docs.google.com/spreadsheets/.../edit?usp=sharing
+dow = 2 ; wednesday
 page = https://apps.dashplatform.com/dash/index.php?Action=team/index&company=pisa&teamid=xxx
 
 [host]
@@ -9,9 +10,10 @@ imglink = http://www.example.com/pisa_head_count/current_roster.png
 [email]
 from = no-reply@example.com
 tsv = https://docs.google.com/spreadsheets/...&single=true&output=tsv
-subject_pre = "[Sun Soccer]"
+header = [Soccer]
 
 [pay]
 cost = 57
+; do not include venmo @ in user id
 venmo_id = xxx
 paypal_id = Yyy

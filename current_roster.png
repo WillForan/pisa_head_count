@@ -1,21 +1,39 @@
 #!/usr/bin/env python3
 
+#
+# generate image of roster
+#
+
+#  QUERY_STRING="date=02/03&config=2019-01-sun-coolsprings" ./current_roster.png
+
 import cgitb, cgi
 import sys
+import os.path
 import matplotlib
 matplotlib.use('agg')
 from soccerimg import most_recent_image, game_roster, plot_players, \
-        dayrow_extract, stream_plot
+        dayrow_extract, stream_plot, read_config
 
 cgitb.enable()
 form = cgi.FieldStorage()
+config = form.getfirst('config')
 match_date = form.getfirst('date')
-if match_date is None:
-    img = most_recent_image()
+
+if not config is None:
+    config_file = os.path.dirname(__file__) + "/config/" + config + ".ini"
 else:
-    dayrow = game_roster(match_date)
-    fig = plot_players(**dayrow_extract(dayrow))
-    img = stream_plot(fig)
+    config_file = ""
+
+if config is None or \
+   match_date is None or \
+   not os.path.isfile(config_file):
+    print("Content-type: text/html\n")
+    print("Error with config(%s) or match_date (%s)" %(config, match_date) )
+    sys.exit()
+
+dayrow = game_roster(match_date, config_file=config_file)
+fig = plot_players(**dayrow_extract(dayrow))
+img = stream_plot(fig)
 
 # stop gmail proxy cache
 # https://stackoverflow.com/questions/21802820/dynamic-images-for-email-such-as-countdown-clocks-in-light-of-gmail-image-cachi
